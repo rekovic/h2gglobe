@@ -1103,7 +1103,7 @@ bool StatAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float weight, TLorentz
 
             if (fillOptTree) {
                 fillOpTree(l, lead_p4, sublead_p4, -2, diphoton_index, diphoton_id, -2, -2, weight, 
-                        mass, -1, -1, Higgs, -2, category, VBFevent, myVBF_Mjj, myVBFLeadJPt, 
+                        mass, -1, -1, -1, Higgs, -2, category, VBFevent, myVBF_Mjj, myVBFLeadJPt, 
                         myVBFSubJPt, nVBFDijetJetCategories, isSyst, "no-syst");
             }
         }
@@ -1590,6 +1590,9 @@ void StatAnalysis::computeExclusiveCategory(LoopAll & l, int & category, std::pa
             } else {
                 category += categoryFromBoundaries2D(multiclassVbfCatBoundaries0, multiclassVbfCatBoundaries1, multiclassVbfCatBoundaries2, myVBF_MVA0, myVBF_MVA1, myVBF_MVA2);
             }
+        } else if ( TwoDVbfSelection ){
+            category += l.DiphotonCategory(diphoton_index.first,diphoton_index.second,pt,nVBFEtaCategories,1,1)
+                + l.DijetSubCategory(myVBF_Mjj,myVBFLeadJPt,myVBFSubJPt,nVBFDijetJetCategories);
         } else {
             category += l.DiphotonCategory(diphoton_index.first,diphoton_index.second,pt,nVBFEtaCategories,1,1)
                 + nVBFEtaCategories*l.DijetSubCategory(myVBF_Mjj,myVBFLeadJPt,myVBFSubJPt,nVBFDijetJetCategories);
@@ -2033,7 +2036,7 @@ void dumpPhoton(std::ostream & eventListText, int lab,
 
 void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, Float_t vtxProb,
         std::pair<int, int> diphoton_index, Int_t diphoton_id, Float_t phoid_mvaout_lead, Float_t phoid_mvaout_sublead,
-        Float_t weight, Float_t mass, Float_t sigmaMrv, Float_t sigmaMwv,
+        Float_t weight, Float_t mass, Float_t sigmaMeonly, Float_t sigmaMrv, Float_t sigmaMwv,
         const TLorentzVector & Higgs, Float_t diphobdt_output, Int_t category, bool VBFevent, Float_t myVBF_Mjj, Float_t myVBFLeadJPt, 
         Float_t myVBFSubJPt, Int_t nVBFDijetJetCategories, bool isSyst, std::string name1) {
 
@@ -2203,8 +2206,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     ///l.FillTree("eleregr2", r2);
     ///l.FillTree("eleregrerr2", er2);
 
-    //l.FillTree("sceta1", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.first]))->Eta());
-    //l.FillTree("scphi1", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.first]))->Phi());
+    l.FillTree("sceta1", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.first]))->Eta());
+    l.FillTree("scphi1", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.first]))->Phi());
     l.FillTree("scraw1", l.sc_raw[l.pho_scind[diphoton_index.first]]);
     //l.FillTree("e5x51", l.pho_e5x5[diphoton_index.first]);
     //l.FillTree("e3x31", l.pho_e3x3[diphoton_index.first]);
@@ -2231,8 +2234,8 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     //l.FillTree("betacry1", (float)999.);
     //l.FillTree("bphicry1", (float)999.);
 
-    //l.FillTree("sceta2", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.second]))->Eta());
-    //l.FillTree("scphi2", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.second]))->Phi());
+    l.FillTree("sceta2", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.second]))->Eta());
+    l.FillTree("scphi2", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.second]))->Phi());
     l.FillTree("scraw2", l.sc_raw[l.pho_scind[diphoton_index.second]]);
     //l.FillTree("e5x52", l.pho_e5x5[diphoton_index.second]);
     //l.FillTree("e3x32", l.pho_e3x3[diphoton_index.second]);
@@ -2284,6 +2287,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("dijet_dPhi",        myVBFdPhi);
     l.FillTree("dijet_Mjj",         myVBF_Mjj);
     l.FillTree("dijet_MVA",         myVBF_MVA);
+    l.FillTree("sigmaMeonlyoM", (float)sigmaMeonly/mass);
 
     l.FillTree("issyst", (int)isSyst);
     l.FillTree("name1", name1);

@@ -78,7 +78,7 @@ class StatAnalysis : public PhotonAnalysis
 
     void fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const TLorentzVector & sublead_p4, Float_t vtxProb,
 		     std::pair<int, int> diphoton_index, Int_t diphoton_id, Float_t phoid_mvaout_lead, Float_t phoid_mvaout_sublead,
-		     Float_t weight, Float_t mass, Float_t sigmaMrv, Float_t sigmaMwv,
+		     Float_t weight, Float_t mass, Float_t sigmaMeonly, Float_t sigmaMrv, Float_t sigmaMwv,
 		     const TLorentzVector & Higgs, Float_t diphobdt_output, Int_t category, bool VBFevent, Float_t myVBF_Mjj, Float_t myVBFLeadJPt, 
 		     Float_t myVBFSubJPt, Int_t nVBFDijetJetCategories, bool isSyst, std::string name1);
 
@@ -126,7 +126,7 @@ class StatAnalysis : public PhotonAnalysis
 	int VHmuevent_cat;
     int VHmetevent_cat;
     double genLevWeight; 
-    float sigmaMrv, sigmaMwv;
+    float sigmaMrv, sigmaMwv,sigmaMeonly;
     int vbfIjet1, vbfIjet2;
 
     void buildBkgModel(LoopAll& l, const std::string & postfix);

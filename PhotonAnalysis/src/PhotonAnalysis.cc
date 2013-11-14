@@ -161,6 +161,7 @@ PhotonAnalysis::PhotonAnalysis()  :
     bookDiPhoCutsInVbf=false;
     multiclassVbfSelection=false;
     vbfVsDiphoVbfSelection=false;
+    TwoDVbfSelection=false;
     
     combinedmvaVbfSelection=false;
     reweighPt=false;
@@ -3882,6 +3883,7 @@ bool PhotonAnalysis::VBFTag2011(LoopAll& l, int diphoton_id, float* smeared_pho_
     myVBFZep    = fabs(diphoton.Eta() - 0.5*(jet1->Eta() + jet2->Eta()));
     myVBFdPhi   = fabs(diphoton.DeltaPhi(dijet));
     myVBF_Mgg   = diphoton.M();
+    myVBF_sigmaMeonlyOverM = myVBF_sigmaMeonly/myVBF_Mgg;
 
     if(nm1){
         tag = l.ApplyCutsFill(0,1, eventweight, myweight);
@@ -4001,6 +4003,42 @@ bool PhotonAnalysis::VBFTag2013(int & ijet1, int & ijet2, LoopAll& l, int& dipho
     }
     return tag;
 }
+
+bool PhotonAnalysis::VBFTag2D2013(LoopAll& l, int diphoton_id, float* smeared_pho_energy, bool nm1, float eventweight, float myweight){
+    bool tag = false;
+
+    if(diphoton_id==-1) return tag;
+
+    TLorentzVector lead_p4    = l.get_pho_p4( l.dipho_leadind[diphoton_id], l.dipho_vtxind[diphoton_id], &smeared_pho_energy[0]);
+    TLorentzVector sublead_p4 = l.get_pho_p4( l.dipho_subleadind[diphoton_id], l.dipho_vtxind[diphoton_id], &smeared_pho_energy[0]);
+
+    std::pair<int, int> jets = l.Select2HighestPtJets(lead_p4, sublead_p4 );
+    if(jets.first==-1 or jets.second==-1) return tag;
+
+    TLorentzVector diphoton = lead_p4+sublead_p4;
+
+    TLorentzVector* jet1 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets.first);
+    TLorentzVector* jet2 = (TLorentzVector*)l.jet_algoPF1_p4->At(jets.second);
+    TLorentzVector dijet = (*jet1) + (*jet2);
+
+    myVBFLeadJPt= jet1->Pt();
+    myVBFSubJPt = jet2->Pt();
+    myVBF_Mjj   = dijet.M();
+    myVBFdEta   = fabs(jet1->Eta() - jet2->Eta());
+    myVBFZep    = fabs(diphoton.Eta() - 0.5*(jet1->Eta() + jet2->Eta()));
+    myVBFdPhi   = fabs(diphoton.DeltaPhi(dijet));
+    myVBF_Mgg   = diphoton.M();
+    myVBF_sigmaMeonlyOverM = myVBF_sigmaMeonly/myVBF_Mgg;
+
+    if(nm1){
+        tag = l.ApplyCutsFill(0,1, eventweight, myweight);
+    } else {
+        tag = l.ApplyCuts(0,1);
+    }
+
+    return tag;
+}
+
 
 
 int PhotonAnalysis::categoryFromBoundaries(std::vector<float> & v, float val)
@@ -5739,6 +5777,8 @@ void PhotonAnalysis::saveVBFTree(LoopAll &l, int category, float evweight, float
   l.FillTree("zepp",myVBFZep,"vbf_trees");
   l.FillTree("dPhiJJGammaGamma",myVBFdPhi,"vbf_trees");
   l.FillTree("mass",myVBF_Mgg,"vbf_trees");
+  l.FillTree("sigmaMeonly",myVBF_sigmaMeonly,"vbf_trees");
+  l.FillTree("sigmaMeonlyoM",myVBF_sigmaMeonlyOverM,"vbf_trees");
   
   // gen variables:
   //gen photons,  higgs
@@ -5769,6 +5809,8 @@ void PhotonAnalysis::saveVBFTree(LoopAll &l, int category, float evweight, float
   
   
   l.FillTree("dPhiJJGammaGammaGen",myVBFdPhi_gen,"vbf_trees");
+
+  cout << "In function saveVBFTree() Filled vbf_trees" << endl;
 }
 
 void PhotonAnalysis::VBFAngles(TLorentzVector& gamma1, TLorentzVector& gamma2, TLorentzVector& J1, TLorentzVector& J2)
@@ -5912,6 +5954,8 @@ float PhotonAnalysis::getDiphoBDTOutput(LoopAll &l,int diphoton_id, TLorentzVect
     float sigmaMrv = massResolutionCalculator->massResolutionCorrVtx();
     float sigmaMwv = massResolutionCalculator->massResolutionWrongVtx();
     float sigmaMeonly = massResolutionCalculator->massResolutionEonly();
+
+    myVBF_sigmaMeonly = sigmaMeonly;
     
     //diphoton mva                                                                                                                                                     
     float diphobdt_output = l.diphotonMVA(-1,l.dipho_leadind[diphoton_id],l.dipho_subleadind[diphoton_id],0 ,//vertex 0 probability 1                             

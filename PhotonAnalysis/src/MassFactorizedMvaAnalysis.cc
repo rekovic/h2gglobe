@@ -714,6 +714,16 @@ bool MassFactorizedMvaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float wei
                 float myweight=1.;
 		if(eventweight*sampleweight!=0) myweight=eventweight/sampleweight;
                 VBFevent = VBFTag2013(vbfIjet1, vbfIjet2, l, diphotonVBF_id, &smeared_pho_energy[0], vetodipho, kinonly, true, eventweight, myweight);
+            } else if (TwoDVbfSelection) {
+                diphotonVBF_id = l.DiphotonMITPreSelection(bdtTrainingType.c_str(),leadEtVBFCut,subleadEtVBFCut,phoidMvaCut,applyPtoverM, 
+                                                            &smeared_pho_energy[0], vetodipho, kinonly );
+                float eventweight = weight * smeared_pho_weight[l.dipho_leadind[diphotonVBF_id]] * smeared_pho_weight[l.dipho_subleadind[diphotonVBF_id]] * genLevWeight;
+                float myweight=1.;
+                if(eventweight*sampleweight!=0) myweight=eventweight/sampleweight;
+                
+                VBFevent= ( run7TeV4Xanalysis ? 
+                    VBFTag2D2013(l, diphotonVBF_id, &smeared_pho_energy[0], true, eventweight, myweight) :
+                    VBFTag2D2013(l, diphotonVBF_id, &smeared_pho_energy[0], true, eventweight, myweight) );
             } else {
                 diphotonVBF_id = l.DiphotonMITPreSelection(bdtTrainingType.c_str(),leadEtVBFCut,subleadEtVBFCut,phoidMvaCut,applyPtoverM, 
                                                             &smeared_pho_energy[0], vetodipho, kinonly );
@@ -863,6 +873,9 @@ bool MassFactorizedMvaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float wei
         if (doDiphoMvaUpFront || diphobdt_output>=bdtCategoryBoundaries.back()) { 
             computeExclusiveCategory(l, category, diphoton_index, Higgs.Pt(), diphobdt_output, true); 
         }
+        if (TwoDVbfSelection) { 
+            computeExclusiveCategory(l, category, diphoton_index, Higgs.Pt(), diphobdt_output, true); 
+        }
 
         if (fillOptTree) {
             std::string name;
@@ -875,11 +888,11 @@ bool MassFactorizedMvaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float wei
 
             if (!isSyst) {
                 fillOpTree(l, lead_p4, sublead_p4, vtxProb, diphoton_index, diphoton_id, phoid_mvaout_lead, phoid_mvaout_sublead, 
-                    weight, mass, sigmaMrv, sigmaMwv, Higgs, diphobdt_output, category, VBFevent, 
+                    weight, mass, sigmaMeonly, sigmaMrv, sigmaMwv, Higgs, diphobdt_output, category, VBFevent, 
                     myVBF_Mjj, myVBFLeadJPt, myVBFSubJPt, nVBFDijetJetCategories, isSyst, "no-syst");
             } else {
                 fillOpTree(l, lead_p4, sublead_p4, vtxProb, diphoton_index, diphoton_id, phoid_mvaout_lead, phoid_mvaout_sublead, 
-                    weight, mass, sigmaMrv, sigmaMwv, Higgs, diphobdt_output, category, VBFevent, 
+                    weight, mass, sigmaMeonly, sigmaMrv, sigmaMwv, Higgs, diphobdt_output, category, VBFevent, 
                     myVBF_Mjj, myVBFLeadJPt, myVBFSubJPt, nVBFDijetJetCategories, isSyst, name);
             }
         }
@@ -915,7 +928,9 @@ bool MassFactorizedMvaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float wei
         }
 
         // save trees for VBF
-        if (!isSyst && cur_type<0 && saveVBFTrees_) {
+        //std::cout << "isSyst " << isSyst << "   cur_type " << cur_type << "    saveVBFTrees_ " << saveVBFTrees_ << std::endl;
+        if (!isSyst && cur_type<0 && saveVBFTrees_) 
+        {
             saveVBFTree(l, category, evweight, diphobdt_output);
         }
 
@@ -2115,6 +2130,7 @@ void MassFactorizedMvaAnalysis::ComputeDiphoMvaInputs(LoopAll &l, float &phoid_m
     float vtx_mva  = l.vtx_std_evt_mva->at(diphoton_id);
     sigmaMrv = massResolutionCalculator->massResolutionEonly();
     sigmaMwv = massResolutionCalculator->massResolutionWrongVtx();
+    sigmaMeonly = massResolutionCalculator->massResolutionEonly();
     
     vtxAna_.setPairID(diphoton_id); 
     vtxProb = vtxAna_.vertexProbability(vtx_mva);

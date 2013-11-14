@@ -1,0 +1,143 @@
+## Trigger selection
+doTriggerSelection=1
+
+## Di-jet tag
+includeVBF=1
+usePUjetveto=1
+
+# 2-categories cut-based
+nVBFEtaCategories=1
+nVBFDijetJetCategories=2
+leadEtVBFCut=60
+subleadEtVBFCut=25
+mvaVbfSelection=0
+
+### MVA tag
+#mvaVbfSelection=1
+#multiclassVbfSelection=0
+#mvaVbfWeights=aux/TMVA_vbf_6var_mjj100_diphopt_phopt_BDTG.weights.xml
+#mvaVbfMethod=BDTG
+#leadEtVBFCut=40
+#subleadEtVBFCut=30
+#mvaVbfCatBoundaries=1.,0.985,0.93 
+
+## Singal mass points to book
+sigPointsToBook=105,110,115,120,125,130,135,140,145,150,124,126
+
+## Hadronic TTH tag
+includeTTHhad=1
+leadEtTTHhadCut=60
+subleadEtTTHhadCut=25
+diphobdt_output_Cut_TTHhad=-0.3
+njets_tthHad_thresh=5
+ptJets_ttH_thresh=25.
+removeBtagtth=0
+applyLeptonSF=0
+applyBtagSF=0
+
+
+## Leptonic TTH tag
+includeTTHlep=1
+leadEtTTHlepCut=60
+subleadEtTTHlepCut=25
+diphobdt_output_Cut_TTHlep=-0.6
+deltaRPholep_cut=0
+doMinvCut=0
+doDrGsfTrackCut=1
+drSC_lep=0.5
+drGsf_lep=1.
+doApplyEleVeto=0 
+
+	
+## Hadronic V tag
+includeVHhad=1
+nVHhadEtaCategories=1
+leadEtVHhadCut=60
+subleadEtVHhadCut=25
+diphobdt_output_Cut_VHhad=0.2
+ptgg_0tag_cut=130.
+costhetastar_0tag_cut=0.50
+ptjet_0tag_cut=40.
+
+## Hadronic V tag + btag
+includeVHhadBtag=0
+leadEtVHhadBtagCut=60
+subleadEtVHhadBtagCut=25
+ptjet_loosecut=25
+diphobdt_output_Cut_VHhadBtag=0.1
+ptgg_btag_cut=120.
+costhetastar_btag_cut=0.55
+ptjet_btag_cut=25.
+
+
+## Lepton tag
+includeVHlep=0
+includeVHlepPlusMet=1
+leadEtVHlepCut=45
+#subleadEtVHlepCut=30
+nElectronCategories=1 
+nMuonCategories=1 
+diphobdt_output_Cut_VHLep=-0.6
+
+## MET tag
+includeVHmet=1
+leadEtVHmetCut=45
+#subleadEtVHmetCut=30
+nMetCategories=1 
+moriond2013MetCorrection=0
+diphobdt_output_Cut_VHMet=0.
+
+doKFactorSmear=0
+doKFactorSyst=0
+
+## Inputs for reweighing
+kfacHist=
+# ggh scale uncertainties
+pdfWeightHist=aux/GF_mvasys.root
+## For 7TeV samples
+## kfacHist=aux/KFactors_AllScales_interpolated.root
+puMap=
+puHist=auto
+## puTarget=aux/HCP2012_preapproval_red_v1.json.69400.observed.pileup.root
+## puTarget=aux/Moriond_pileup_190456-208686_minBiasXsec69400_corr_observed.root
+puTargets=aux/AB.json.69400.observed.pileup.root,aux/C.json.69400.observed.pileup.root,aux/D.json.69400.observed.pileup.root
+
+## energy regression
+energyCorrectionMethod=BendavidOTF
+doEcorrectionSmear=1
+doEcorrectionSyst=1
+
+## energy scale adjustement and errors
+scale_offset_file=jan22rereco_8TeV/energy_scale_offsets_rd_mc.dat
+scale_offset_error_file=energy_scale_errors.dat
+
+## uncorrelated part of the uncertainties
+splitEscaleSyst=0
+scale_offset_corr_error_file=energy_scale_corr_errors.dat
+
+## additional MC smearing
+smearing_file=jan22rereco_8TeV/smearing_sigma_and_errors_rd_mc.dat
+## smearing correction for BDT input
+mass_resol_file=jan22rereco_8TeV/smearing_sigma_and_errors_rd_mc.dat
+
+## uncorrelated part of the uncertainties
+splitEresolSyst=0
+corr_smearing_file=smearing_sigma_corr_errors.dat
+
+## jets
+recomputeBetas=0
+recorrectJets=0
+rerunJetMva=0
+recomputeJetWp=0
+jetHandlerCfg=jetHandler_Legacy8TeV.py
+
+## revertex
+reRunVtx=0
+rematchConversions=0
+
+doInterferenceSmear=1
+
+splitwzh=1
+datacardTreeMass=125
+
+scaleClusterShapes=0

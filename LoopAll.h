@@ -673,6 +673,19 @@ int DijetSubCategory(float mjj, float leadPt, float subledPt, float ncat)
 	return ( mjj < 500. || subledPt < 30. );
 }
 
+int DijetSubCategorySigmaMoM(float sigmaMeonlyoM)
+{
+	int rc = 0;
+
+	if ( sigmaMeonlyoM > 0.00E-2 && sigmaMeonlyoM < 1.00E-2 ) rc =0;
+	if ( sigmaMeonlyoM > 1.00E-2 && sigmaMeonlyoM < 1.20E-2 ) rc =1;
+	if ( sigmaMeonlyoM > 1.20E-2 && sigmaMeonlyoM < 1.60E-2 ) rc =2;
+	if ( sigmaMeonlyoM > 1.60E-2 && sigmaMeonlyoM < 2.30E-2 ) rc =3;
+
+        return rc;
+}
+
+
 
 //----------------------------------------------------------------------
 
