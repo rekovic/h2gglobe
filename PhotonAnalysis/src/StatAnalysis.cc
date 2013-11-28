@@ -2106,8 +2106,9 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
 
     l.FillTree("et1", (float)lead_p4.Et());
     l.FillTree("et2", (float)sublead_p4.Et());
-    l.FillTree("eta1", (float)lead_p4.Eta());
-    l.FillTree("eta2", (float)sublead_p4.Eta());
+    // Comment it out since in my fitter these names are used for SCeta
+    //l.FillTree("eta1", (float)lead_p4.Eta());
+    //l.FillTree("eta2", (float)sublead_p4.Eta());
     l.FillTree("r91", (float)l.pho_r9[diphoton_index.first]);
     l.FillTree("r92", (float)l.pho_r9[diphoton_index.second]);
     l.FillTree("sieie1", (float)l.pho_sieie[diphoton_index.first]);
@@ -2285,7 +2286,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("gv_y", (float)9999.);
         l.FillTree("gv_z", (float)9999.);
     }
-    
+
     l.FillTree("dijet_leadEta",     myVBFLeadJEta);
     l.FillTree("dijet_subleadEta",  myVBFSubJEta);
     l.FillTree("dijet_LeadJPt",     myVBFLeadJPt);
@@ -2296,6 +2297,38 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("dijet_Mjj",         myVBF_Mjj);
     l.FillTree("dijet_MVA",         myVBF_MVA);
     l.FillTree("sigmaMeonlyoM", (float)sigmaMeonly/mass);
+
+    // Add same variables with diff names by V.R.
+    // /////////////////////////////////////////////
+    l.FillTree("piT", (float)Higgs.Pt()/mass);
+    l.FillTree("pt", (float)Higgs.Pt());
+    l.FillTree("pit1", (float)lead_p4.Pt()/mass);  
+    l.FillTree("pit2", (float)sublead_p4.Pt()/mass);
+    l.FillTree("wei", (float)1.0);
+    l.FillTree("wXsec", (float)1.0);
+    l.FillTree("wNgen", (float)1.0);
+    l.FillTree("massResoEng", (float)sigmaMeonly/mass);
+    l.FillTree("massResoTot", (float)sigmaMeonly/mass);
+
+    l.FillTree("massResoEngPosErr", (float)sigmaMeonly/mass);
+    l.FillTree("massResoEngNegErr", (float)sigmaMeonly/mass);
+
+    l.FillTree("mJJ",           myVBF_Mjj);
+    l.FillTree("dEtaJJ",        myVBFdEta);
+    l.FillTree("zeppenfeld",    myVBFZep);
+    l.FillTree("dphiGGJJ",      myVBFdPhi);
+    l.FillTree("jet1Pt",        myVBFLeadJPt);
+    l.FillTree("jet2Pt",        myVBFSubJPt);
+    l.FillTree("minR9", min((float)l.pho_r9[diphoton_index.first],(float)l.pho_r9[diphoton_index.second]));
+    l.FillTree("minSCEta", min((float)lead_p4.Eta(),(float)sublead_p4.Eta()));
+    l.FillTree("maxSCEta", max(abs((float)lead_p4.Eta()),abs((float)sublead_p4.Eta())));
+    // already included l.FillTree("eta1", (float)lead_p4.Eta());
+    // already included l.FillTree("eta2", (float)sublead_p4.Eta());
+    // Rename these
+    l.FillTree("eta1", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.first]))->Eta());
+    l.FillTree("eta2", (float)((TVector3*)l.sc_xyz->At(l.pho_scind[diphoton_index.second]))->Eta());
+    // already included l.FillTree("r91", (float)l.pho_r9[diphoton_index.first]);
+    // already included l.FillTree("r92", (float)l.pho_r9[diphoton_index.second]);
 
     l.FillTree("issyst", (int)isSyst);
     l.FillTree("name1", name1);
@@ -2334,6 +2367,7 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
         l.FillTree("dipho_mva_cat", (float)category);
         if (diphobdt_output>=bdtCategoryBoundaries.back()) computeExclusiveCategory(l,category,diphoton_index,Higgs.Pt(),Higgs.M(),diphobdt_output); 
     }
+
 };
 
 
