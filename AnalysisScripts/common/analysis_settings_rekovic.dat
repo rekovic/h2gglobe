@@ -10,7 +10,10 @@ nVBFEtaCategories=1
 nVBFDijetJetCategories=2
 leadEtVBFCut=60
 subleadEtVBFCut=25
+#TwoDVbfSelection=1
+
 mvaVbfSelection=0
+combinedmvaVbfSelection=0
 
 ### MVA tag
 #mvaVbfSelection=1
@@ -22,7 +25,8 @@ mvaVbfSelection=0
 #mvaVbfCatBoundaries=1.,0.985,0.93 
 
 ## Singal mass points to book
-sigPointsToBook=105,110,115,120,125,130,135,140,145,150,124,126
+#sigPointsToBook=105,110,115,120,125,130,135,140,145,150,124,126
+sigPointsToBook=125
 
 ## Hadronic TTH tag
 includeTTHhad=1

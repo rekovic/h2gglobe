@@ -1,15 +1,15 @@
 # VBF
 
-## 2-categories cut-based (rekovic)
+# 2-categories cut-based (rekovic)
 nVBFEtaCategories=1
 nVBFDijetJetCategories=2
 leadEtVBFCut=60
 subleadEtVBFCut=25
-TwoDVbfSelection=1
+#TwoDVbfSelection=1
 
 mvaVbfSelection=0
 combinedmvaVbfSelection=0
-
+#
 #combinedmvaVbfSelection=1
 #mvaVbfSelection=1
 ##mvaVbfWeights=aux/TMVA_dijet_sherpa_fixwt_limw2_oddb_nopt12_Gradient.weights.xml
@@ -37,7 +37,8 @@ combinedmvaVbfSelection=0
 
 
 leadEtCut=40.0
-subleadEtCut=30.0
+subleadEtCut=25.0
+applyPtoverM=1
 
 # Options for the mass spectrum range
 massMin=100.
@@ -58,7 +59,7 @@ applySigmaECorrection=0
 
 ## Moved to analysis_settings.dat
 ### leadEtVBFCut=55
-subleadEtVBFCut=30
+#subleadEtVBFCut=30
 
 ##  sliding pt/m > 1/4 in mass fac to match event bdt training
 subleadEtVHlepCut=30

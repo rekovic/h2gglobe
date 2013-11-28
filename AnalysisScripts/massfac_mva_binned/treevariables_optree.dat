@@ -1,9 +1,7 @@
-->
 Declare Branches for flat tree which will be saved in output
 delare:
 	type=0,1,2,3 (int, unsigned int, float, double)
 	name=name 
-->
 
 
 type=2 name=run
@@ -167,6 +165,7 @@ type=2 name=dijet_Zep
 type=2 name=dijet_dPhi
 type=2 name=dijet_Mjj
 type=2 name=dijet_MVA
+type=2 name=bdt_combined
 type=2 name=dRphojet1
 type=2 name=dRphojet2
 type=2 name=njets10
@@ -197,3 +196,4 @@ type=2 name=jet2Pt
 type=2 name=minR9
 type=2 name=minSCEta
 type=2 name=maxSCEta
+type=2 name=bdt_combined
