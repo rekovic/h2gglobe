@@ -1,5 +1,5 @@
-intL=19715. histfile=/store/group/phys_higgs/cmshgg/analyzed/legacy/massfac/8TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=8
-#intL=19715. histfile=/store/user/amarini/CMS-HGG/%(label)s/CMS-HGG.root output=eventsList.txt
+#intL=19715. histfile=/store/group/phys_higgs/cmshgg/analyzed/legacy/massfac/8TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=8
+ntL=19715. histfile=/store/caf/user/rekovic/legacy2013/globeResults/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=8 
 
 #
 # Data
