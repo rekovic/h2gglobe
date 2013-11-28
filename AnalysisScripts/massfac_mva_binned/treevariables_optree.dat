@@ -174,3 +174,26 @@ type=2 name=njets15
 type=2 name=njets20
 
 type=2 name=sigmaMeonlyoM
+    
+type=2 name=piT
+type=2 name=pt
+type=2 name=pit1
+type=2 name=pit2
+type=2 name=wei
+type=2 name=wXsec
+type=2 name=wNgen
+type=2 name=massResoEng
+type=2 name=massResoTot
+
+type=2 name=massResoEngPosErr
+type=2 name=massResoEngNegErr
+
+type=2 name=mJJ
+type=2 name=dEtaJJ
+type=2 name=zeppenfeld
+type=2 name=dphiGGJJ
+type=2 name=jet1Pt
+type=2 name=jet2Pt
+type=2 name=minR9
+type=2 name=minSCEta
+type=2 name=maxSCEta
