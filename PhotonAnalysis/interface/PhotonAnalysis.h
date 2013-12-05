@@ -410,7 +410,7 @@ class PhotonAnalysis : public BaseAnalysis
     bool bookDiPhoCutsInVbf;
     bool mvaVbfSelection, mvaVbfUseDiPhoPt, mvaVbfUsePhoPt;
     bool combinedmvaVbfSelection;
-    bool TwoDVbfSelection;
+    bool twoDVbfSelection;
     bool mvaVbfSpin;
     bool multiclassVbfSelection, vbfVsDiphoVbfSelection;
     TString mvaVbfDiphoWeights, mvaVbfDiphoMethod;
@@ -420,6 +420,9 @@ class PhotonAnalysis : public BaseAnalysis
     std::vector<float> multiclassVbfCatBoundaries0;
     std::vector<float> multiclassVbfCatBoundaries1;
     std::vector<float> multiclassVbfCatBoundaries2;
+
+    float phoidMva2DVbfCut;
+    std::vector<float> sigmaMeonlyVbfCatBoundaries;
 
     // Smearings / corrections and systematics
     bool  doMCSmearing, doSystematics;
@@ -459,11 +462,12 @@ class PhotonAnalysis : public BaseAnalysis
     // Exclusive tags
     TMVA::Reader *tmvaVbfDiphoReader_;
 
+    int  categoryFromIncreasingBoundaries(std::vector<float> & v, float val);
     int  categoryFromBoundaries(std::vector<float> & v, float val);
     int  categoryFromBoundaries2D(std::vector<float> & v1, std::vector<float> & v2, std::vector<float> & v3, float val1, float val2, float val3);
     
     bool VBFTag2013(int & ijet1, int & ijet2, LoopAll& l, int& diphotonVBF_id, float* smeared_pho_energy=0, bool vetodipho=true, bool kinonly=true, bool mvaselection=true, float eventweight=1, float myweight=1);
-    bool VBFTag2D2013(LoopAll& l, int diphoton_id, float* smeared_pho_energy=0, bool nm1=false, float eventweight=1, float myweight=1);
+    bool VBFTag2D2013(LoopAll& l, int diphoton_id, float sigmaMeonly, float* smeared_pho_energy=0, bool nm1=false, float eventweight=1, float myweight=1);
     bool FillDijetVariables(int & ijet1, int & ijet2, LoopAll& l, int diphoton_id, float* smeared_pho_energy=0,bool* jetid_flag=0, bool getAngles=0);
     // ICHEP2012
     bool VBFTag2012(int & ijet1, int & ijet2, LoopAll& l, int diphoton_id,

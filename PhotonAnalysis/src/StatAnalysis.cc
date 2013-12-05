@@ -1625,9 +1625,10 @@ void StatAnalysis::computeExclusiveCategory(LoopAll & l, int & category, std::pa
             } else {
                 category += categoryFromBoundaries2D(multiclassVbfCatBoundaries0, multiclassVbfCatBoundaries1, multiclassVbfCatBoundaries2, myVBF_MVA0, myVBF_MVA1, myVBF_MVA2);
             }
-        } else if ( TwoDVbfSelection ){
-            category += l.DiphotonCategory(diphoton_index.first,diphoton_index.second,pt,nVBFEtaCategories,1,1)
-                + l.DijetSubCategory(myVBF_Mjj,myVBFLeadJPt,myVBFSubJPt,nVBFDijetJetCategories);
+        } else if ( twoDVbfSelection ){
+            int vbfcat=-1;
+            vbfcat=categoryFromIncreasingBoundaries(sigmaMeonlyVbfCatBoundaries,myVBF_sigmaMeonlyOverM);
+            category += vbfcat;
         } else {
             category += l.DiphotonCategory(diphoton_index.first,diphoton_index.second,pt,pt/mass,nVBFEtaCategories,1,1)
                 + nVBFEtaCategories*l.DijetSubCategory(myVBF_Mjj,myVBFLeadJPt,myVBFSubJPt,nVBFDijetJetCategories);

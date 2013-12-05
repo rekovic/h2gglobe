@@ -1,5 +1,7 @@
-intL=5089.0 histfile=/store/group/phys_higgs/cmshgg/analyzed/legacy/massfac/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
+#intL=5089.0 histfile=/store/group/phys_higgs/cmshgg/analyzed/legacy/massfac/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
 #intL=5089.0 histfile=CMS-HGG_123vbf.root output=eventsList.txt sqrtS=7
+#intL=19715. histfile=/store/caf/user/rekovic/legacy2013/globeResults/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
+intL=5089.0 histfile=/store/caf/user/rekovic/legacy2013/globeResults/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
 
 #
 # Data
@@ -105,5 +107,5 @@ treevariables massfac_mva_binned/fullmvatrees.dat massfac_mva_binned/treevariabl
 ##   analyzer <class_name> <config_file>
 ##
 ## analyzer PhotonAnalysis photonanalysis.dat
-analyzer MassFactorizedMvaAnalysis photonanalysis.dat analysis_settings.dat jun21rereco_7TeV/analysis_settings.dat massfactorizedmvaanalysis.dat jun21rereco_7TeV/massfactorizedmvaanalysis.dat saveDatacardTrees_=1  dumpAscii=1 dumpMcAscii=0 doFullMvaFinalTree=1  fillOptTree=1
+analyzer MassFactorizedMvaAnalysis photonanalysis.dat analysis_settings.dat jun21rereco_7TeV/analysis_settings.dat massfactorizedmvaanalysis.dat jun21rereco_7TeV/massfactorizedmvaanalysis.dat saveDatacardTrees_=0  dumpAscii=1 dumpMcAscii=0 doFullMvaFinalTree=0  fillOptTree=1
 #fillOptTree=1 doSystematics=0

@@ -161,7 +161,9 @@ PhotonAnalysis::PhotonAnalysis()  :
     bookDiPhoCutsInVbf=false;
     multiclassVbfSelection=false;
     vbfVsDiphoVbfSelection=false;
-    TwoDVbfSelection=false;
+    twoDVbfSelection=false;
+
+    phoidMva2DVbfCut=0.;
     
     combinedmvaVbfSelection=false;
     reweighPt=false;
@@ -4011,7 +4013,7 @@ bool PhotonAnalysis::VBFTag2013(int & ijet1, int & ijet2, LoopAll& l, int& dipho
     return tag;
 }
 
-bool PhotonAnalysis::VBFTag2D2013(LoopAll& l, int diphoton_id, float* smeared_pho_energy, bool nm1, float eventweight, float myweight){
+bool PhotonAnalysis::VBFTag2D2013(LoopAll& l, int diphoton_id, float sigmaMeonly, float* smeared_pho_energy, bool nm1, float eventweight, float myweight){
     bool tag = false;
 
     if(diphoton_id==-1) return tag;
@@ -4035,17 +4037,33 @@ bool PhotonAnalysis::VBFTag2D2013(LoopAll& l, int diphoton_id, float* smeared_ph
     myVBFZep    = fabs(diphoton.Eta() - 0.5*(jet1->Eta() + jet2->Eta()));
     myVBFdPhi   = fabs(diphoton.DeltaPhi(dijet));
     myVBF_Mgg   = diphoton.M();
-    myVBF_sigmaMeonlyOverM = myVBF_sigmaMeonly/myVBF_Mgg;
+    myVBF_sigmaMeonlyOverM = sigmaMeonly/myVBF_Mgg;
 
-    if(nm1){
-        tag = l.ApplyCutsFill(0,1, eventweight, myweight);
-    } else {
-        tag = l.ApplyCuts(0,1);
+    if( !(myVBFLeadJPt>30. && myVBFSubJPt>20. && myVBF_Mjj > 250. && abs(myVBFdEta > 3.0) && abs(myVBFZep) < 2.5 && abs(myVBFdPhi) > 2.6 ) ) { // FIXME hardcoded selection thresholds
+       return tag;
     }
+
+    int vbfcat=-1;
+    vbfcat=categoryFromIncreasingBoundaries(sigmaMeonlyVbfCatBoundaries,myVBF_sigmaMeonlyOverM);
+    if( vbfcat!=-1 ) tag = true;
+    if(PADEBUG) std::cout<<"dijet 2D vbfcat:"<<vbfcat<<"  sigmaMeonlyOverM = "<< myVBF_sigmaMeonlyOverM<< "   mass = " << myVBF_Mgg << endl ;
 
     return tag;
 }
 
+int PhotonAnalysis::categoryFromIncreasingBoundaries(std::vector<float> & v, float val)
+{
+    int cat=-1;
+    // val == v[0] would be -1; needs special condition
+    if( val == v[0] ) { cat=0; }
+    else {
+        // bound is pointer to the ith boundary in v such that val>v[i]
+        std::vector<float>::iterator bound =  upper_bound( v.begin(), v.end(), val, std::less<float>  ());
+        cat = ( val <= *bound ? bound - v.begin() - 1 : bound - v.begin() );
+        if( cat >= v.size() - 1 ) { cat = -1; }
+    }
+    return cat;
+}
 
 
 int PhotonAnalysis::categoryFromBoundaries(std::vector<float> & v, float val)

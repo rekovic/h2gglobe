@@ -280,6 +280,8 @@ void MassFactorizedMvaAnalysis::Init(LoopAll& l)
             nVBFCategories = mvaVbfCatBoundaries.size()-1;
         } else if(multiclassVbfSelection) {
             nVBFCategories = multiclassVbfCatBoundaries0.size()-1;
+        } else if(twoDVbfSelection) {
+            nVBFCategories = sigmaMeonlyVbfCatBoundaries.size()-1;
         } else {
             nVBFCategories = nVBFEtaCategories*nVBFDijetJetCategories;
         }
@@ -781,16 +783,15 @@ bool MassFactorizedMvaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float wei
                 float myweight=1.;
                 if(eventweight*sampleweight!=0) myweight=eventweight/sampleweight;
                 VBFevent = VBFTag2013(vbfIjet1, vbfIjet2, l, diphotonVBF_id, &smeared_pho_energy[0], vetodipho, kinonly, true, eventweight, myweight);
-            } else if (TwoDVbfSelection) {
-                diphotonVBF_id = l.DiphotonMITPreSelection(bdtTrainingType.c_str(),leadEtVBFCut,subleadEtVBFCut,phoidMvaCut,applyPtoverM, 
+            } else if (twoDVbfSelection) {
+                diphotonVBF_id = l.DiphotonMITPreSelection(bdtTrainingType.c_str(),leadEtVBFCut,subleadEtVBFCut,phoidMva2DVbfCut,applyPtoverM, 
                                                             &smeared_pho_energy[0], vetodipho, kinonly );
                 float eventweight = weight * smeared_pho_weight[l.dipho_leadind[diphotonVBF_id]] * smeared_pho_weight[l.dipho_subleadind[diphotonVBF_id]] * genLevWeight;
                 float myweight=1.;
                 if(eventweight*sampleweight!=0) myweight=eventweight/sampleweight;
                 
-                VBFevent= ( run7TeV4Xanalysis ? 
-                    VBFTag2D2013(l, diphotonVBF_id, &smeared_pho_energy[0], true, eventweight, myweight) :
-                    VBFTag2D2013(l, diphotonVBF_id, &smeared_pho_energy[0], true, eventweight, myweight) );
+                VBFevent= VBFTag2D2013(l, diphotonVBF_id,sigmaMeonly, &smeared_pho_energy[0], true, eventweight, myweight) ;
+
             } else {
                 diphotonVBF_id = l.DiphotonMITPreSelection(bdtTrainingType.c_str(),leadEtVBFCut,subleadEtVBFCut,phoidMvaCut,applyPtoverM, 
                                                             &smeared_pho_energy[0], vetodipho, kinonly );
@@ -939,8 +940,8 @@ bool MassFactorizedMvaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float wei
         if (doDiphoMvaUpFront || diphobdt_output>=bdtCategoryBoundaries.back()) { 
             computeExclusiveCategory(l, category, diphoton_index, Higgs.Pt(), Higgs.M(), diphobdt_output, true); 
         }
-        if (TwoDVbfSelection) { 
-            computeExclusiveCategory(l, category, diphoton_index, Higgs.Pt(), diphobdt_output, true); 
+        if (twoDVbfSelection) { 
+            computeExclusiveCategory(l, category, diphoton_index, Higgs.Pt(), Higgs.M(), diphobdt_output, true); 
         }
 
         if (fillOptTree) {

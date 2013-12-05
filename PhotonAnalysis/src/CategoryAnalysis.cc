@@ -212,6 +212,10 @@ void CategoryAnalysis::Init(LoopAll& l)
         std::sort(multiclassVbfCatBoundaries2.begin(),multiclassVbfCatBoundaries2.end(), std::greater<float>() );
     }
 
+    if (twoDVbfSelection) {
+        nVBFCategories   = ((int)includeVBF)*( sigmaMeonlyVbfCatBoundaries.size()-1);
+    }
+
     nCategories_=(nInclusiveCategories_+nVBFCategories+nVHlepCategories+nVHmetCategories);
 
 
