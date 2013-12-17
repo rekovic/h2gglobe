@@ -3218,8 +3218,6 @@ float LoopAll::DiphotonMITPreSelectionPerDipho(const char * type, int idipho, Fl
     }
 
     if (!kinonly) {
-	    /// std::cout << "Diphoton preselection " << dipho_leadind[idipho] << " " << dipho_subleadind[idipho] << " " 
-	    /// 	      << photonIDMVA(lead,ivtx,lead_p4,type) << " " << photonIDMVA(sublead,ivtx,sublead_p4,type) << std::endl;
 	if ( photonIDMVA(lead,ivtx,lead_p4,type) <= phoidMvaCut
 	     || photonIDMVA(sublead,ivtx,sublead_p4,type)  <= phoidMvaCut
 	    ) {return -99;}
