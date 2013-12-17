@@ -4,7 +4,7 @@ combinedmvaVbfSelection=0
 mvaVbfSelection=0
 
 leadEtVBFCut=60
-subleadEtVBFCut=30
+subleadEtVBFCut=25
 
 phoidMva2DVbfCut=0.03
 
