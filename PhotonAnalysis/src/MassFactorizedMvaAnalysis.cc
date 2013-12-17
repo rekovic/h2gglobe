@@ -785,7 +785,7 @@ bool MassFactorizedMvaAnalysis::AnalyseEvent(LoopAll& l, Int_t jentry, float wei
                 VBFevent = VBFTag2013(vbfIjet1, vbfIjet2, l, diphotonVBF_id, &smeared_pho_energy[0], vetodipho, kinonly, true, eventweight, myweight);
             } else if (twoDVbfSelection) {
                 diphotonVBF_id = l.DiphotonMITPreSelection(bdtTrainingType.c_str(),leadEtVBFCut,subleadEtVBFCut,phoidMva2DVbfCut,applyPtoverM, 
-                                                            &smeared_pho_energy[0], vetodipho, kinonly );
+                                                            &smeared_pho_energy[0], vetodipho, false  ); /*pass kinonly as "false" to select by idmva in preselection*/
                 float eventweight = weight * smeared_pho_weight[l.dipho_leadind[diphotonVBF_id]] * smeared_pho_weight[l.dipho_subleadind[diphotonVBF_id]] * genLevWeight;
                 float myweight=1.;
                 if(eventweight*sampleweight!=0) myweight=eventweight/sampleweight;
