@@ -2340,8 +2340,7 @@ void MassFactorizedMvaAnalysis::ComputeDiphoMvaInputs(LoopAll &l, float &phoid_m
     float vtx_mva  = l.vtx_std_evt_mva->at(diphoton_id);
     sigmaMrv = massResolutionCalculator->relMassResolutionEonly();
     sigmaMwv = massResolutionCalculator->relMassResolutionWrongVtx();
-
-    sigmaMeonly = massResolutionCalculator->massResolutionEonly();  // this is not relative
+    sigmaMeonly = massResolutionCalculator->relMassResolutionEonly();  
     
     vtxAna_.setPairID(diphoton_id); 
     vtxProb = vtxAna_.vertexProbability(vtx_mva);

@@ -4093,7 +4093,7 @@ bool PhotonAnalysis::VBFTag2011(LoopAll& l, int diphoton_id, float* smeared_pho_
     myVBFZep    = fabs(diphoton.Eta() - 0.5*(jet1->Eta() + jet2->Eta()));
     myVBFdPhi   = fabs(diphoton.DeltaPhi(dijet));
     myVBF_Mgg   = diphoton.M();
-    myVBF_sigmaMeonlyOverM = myVBF_sigmaMeonly/myVBF_Mgg;
+    myVBF_sigmaMeonlyOverM = myVBF_sigmaMeonly;
 
     if(nm1){
         tag = l.ApplyCutsFill(0, 1, eventweight, myweight);
@@ -4248,7 +4248,7 @@ bool PhotonAnalysis::VBFTag2D2013(LoopAll& l, int diphoton_id, float sigmaMeonly
     myVBFZep    = fabs(diphoton.Eta() - 0.5*(jet1->Eta() + jet2->Eta()));
     myVBFdPhi   = fabs(diphoton.DeltaPhi(dijet));
     myVBF_Mgg   = diphoton.M();
-    myVBF_sigmaMeonlyOverM = sigmaMeonly/myVBF_Mgg;
+    myVBF_sigmaMeonlyOverM = sigmaMeonly;
 
     if( !(myVBFLeadJPt>30. && myVBFSubJPt>20. && myVBF_Mjj > 250. && abs(myVBFdEta > 3.0) && abs(myVBFZep) < 2.5 && abs(myVBFdPhi) > 2.6 ) ) { // FIXME hardcoded selection thresholds
        return tag;
@@ -6383,7 +6383,7 @@ float PhotonAnalysis::getDiphoBDTOutput(LoopAll &l,int diphoton_id, TLorentzVect
     float sigmaMwv = massResolutionCalculator->relMassResolutionWrongVtx();
     float sigmaMeonly = massResolutionCalculator->relMassResolutionEonly();
 
-    myVBF_sigmaMeonly = massResolutionCalculator->massResolutionEonly();
+    myVBF_sigmaMeonly = massResolutionCalculator->relMassResolutionEonly();
     
     //diphoton mva                                                                                                                                                     
     float diphobdt_output = l.diphotonMVA(-1,l.dipho_leadind[diphoton_id],l.dipho_subleadind[diphoton_id],0 ,//vertex 0 probability 1                             

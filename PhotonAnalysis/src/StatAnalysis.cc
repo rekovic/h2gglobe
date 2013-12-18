@@ -2714,11 +2714,11 @@ void StatAnalysis::fillOpTree(LoopAll& l, const TLorentzVector & lead_p4, const 
     l.FillTree("wei", (float)1.0);
     l.FillTree("wXsec", (float)1.0);
     l.FillTree("wNgen", (float)1.0);
-    l.FillTree("massResoEng", (float)sigmaMeonly/mass);
-    l.FillTree("massResoTot", (float)sigmaMeonly/mass);
+    l.FillTree("massResoEng", (float)sigmaMeonly);
+    l.FillTree("massResoTot", (float)sigmaMeonly);
 
-    l.FillTree("massResoEngPosErr", (float)sigmaMeonly/mass);
-    l.FillTree("massResoEngNegErr", (float)sigmaMeonly/mass);
+    l.FillTree("massResoEngPosErr", (float)sigmaMeonly);
+    l.FillTree("massResoEngNegErr", (float)sigmaMeonly);
 
     l.FillTree("mJJ",           myVBF_Mjj);
     l.FillTree("dEtaJJ",        myVBFdEta);
