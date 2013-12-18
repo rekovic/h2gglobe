@@ -163,7 +163,8 @@ class PhotonAnalysis : public BaseAnalysis
     int njets_tthHad_thresh;
     bool doDrGsfTrackCut;
 
-    float drSC_lep;
+    float drSC_ele;
+    float drSC_muon;
     float    drGsf_lep;
     int isLep_ele,isLep_mu;
     int eleIndex,muIndex;
@@ -484,6 +485,7 @@ class PhotonAnalysis : public BaseAnalysis
     bool VHhadronicBtag2012(LoopAll& l, int& diphoton_id, float* smeared_pho_energy=0, bool *jetid_flags=0,bool mvaselection=false,bool vetodipho=false, bool kinonly=false);
     //TTH leptonic category
     bool TTHleptonicTag2012(LoopAll& l, int& diphoton_id, float* smeared_pho_energy=0, bool *jetid_flags=0,bool mvaselection=false,bool vetodipho=false, bool kinonly=false);
+    bool TTHleptonicTag2013(LoopAll& l, int& diphoton_id, float* smeared_pho_energy=0, bool *jetid_flags=0,bool mvaselection=false,bool vetodipho=false, bool kinonly=false);
     //TTH hadronic category
     bool TTHhadronicTag2012(LoopAll& l, int& diphoton_id, float* smeared_pho_energy=0, bool *jetid_flags=0, bool mvaselection=false,bool vetodipho=false, bool kinonly=false);
     //only one tth category for 7 TeV
@@ -510,6 +512,7 @@ class PhotonAnalysis : public BaseAnalysis
     bool ElectronTag2012(LoopAll& l, int diphotonVHlep_id, float* smeared_pho_energy, ofstream& lep_sync, bool nm1=false, float eventweight=1, float myweight=1);
     // HCP 2012
     bool ElectronTag2012B(LoopAll& l, int& diphotonVHlep_id, int& el_ind, int& elVtx, int& el_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false, bool vetodipho=false, bool kinonly=false);
+    bool ElectronTag2013(LoopAll& l, int& diphotonVHlep_id, int& el_ind, int& elVtx, int& el_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false, bool vetodipho=false, bool kinonly=false);
     bool ElectronStudies2012B(LoopAll& l, float* smeared_pho_energy, bool mvaselection, float phoidMvaCut, float eventweight=1, float myweight=1, int jentry=-1);
     bool ElectronTagStudies2012(LoopAll& l, int diphotonVHlep_id, float* smeared_pho_energy, bool nm1=true, float eventweight=1, float myweight=1, int jentry=-1);
     void ZWithFakeGammaCS(LoopAll& l, float* smeared_pho_energy);
@@ -522,6 +525,7 @@ class PhotonAnalysis : public BaseAnalysis
     bool MuonTag2012(LoopAll& l, int diphotonVHlep_id, float* smeared_pho_energy, ofstream& lep_sync, bool nm1=false, float eventweight=1, float myweight=1);
     // HCP2012
     bool MuonTag2012B(LoopAll& l, int& diphotonVHlep_id, int& mu_ind, int& muVtx, int& mu_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false, bool vetodipho=false, bool kinonly=false);
+    bool MuonTag2013(LoopAll& l, int& diphotonVHlep_id, int& mu_ind, int& muVtx, int& mu_cat, float* smeared_pho_energy, ofstream& lep_sync, bool mvaselection=true, float phoidMvaCut=-0.2, float eventweight=1.0, std::vector<float>  smeared_pho_weight=std::vector<float>(), bool fillHist=false, bool vetodipho=false, bool kinonly=false);
     void ControlPlotsMuonTag2012B(LoopAll& l, TLorentzVector lead_p4, TLorentzVector sublead_p4, int mu_ind, float bdtoutput, float evweight, std::string label);
 
 

@@ -85,8 +85,10 @@ gbrDiphotonFile=aux/gbrMultiClassoct31_dipho.root
 #tth and vhhad categories added
 #bkgPolOrderByCat=5,5,5,5,4,4,3,3,3,-10,2,3,3
 #bkgPolOrderByCat=5,5,5,5,3,4,4,3,3,3,-10,2,3
-bkgPolOrderByCat=5,5,5,5,5,5,3,4,4,3,3,3,-10,2,3
 
+#bkgPolOrderByCat=5,5,5,5,5,3,4,4,3,3,3,-10,2,3
+#BIAS Studies
+bkgPolOrderByCat=4,5,5,6,6,3,3,4,2,3,3,1,2,3
 # photon ID preselection
 phoidMvaCut=-0.2
 
@@ -97,7 +99,7 @@ phoidMvaCut=-0.2
 #JIM
 #bdtCategoryBoundaries=1,0.915,0.75,0.52,0.1,-0.39
 #JOSH
-bdtCategoryBoundaries=1,0.76,0.36,0.00,-0.42,-0.78,-1
+bdtCategoryBoundaries=1,0.76,0.36,0.00,-0.42,-0.78
 ## photonIDMVAShift_EB=0.
 ## photonIDMVAShift_EE=0.
 
@@ -147,5 +149,6 @@ fillEscaleTrees=0
 
 effPhotonCategoryType=3CatR9_EBEE
 effPhotonNCat=6
-efficiencyFileMVA=aux/sig_reweighing_moriond2013_run2012ABCD_mva_v2.root
+#efficiencyFileMVA=aux/sig_reweighing_moriond2013_run2012ABCD_mva_v2.root
+efficiencyFileMVA=aux/sig_reweighing_legacy_mva_8TeV.root
 

@@ -576,8 +576,18 @@ int DiphotonCiCSelection( phoCiCIDLevel LEADCUTLEVEL = phoLOOSE,
                           float *pho_energy_array=0, 
                           bool split=false, int fixedvtx=-1, std::vector<bool> veto_indices=std::vector<bool>(false),
                           std::vector<int> cutsbycat=std::vector<int>(0));
+std::vector<int> DiphotonCiCSelectionForTaggedChannels( phoCiCIDLevel LEADCUTLEVEL = phoLOOSE, 
+						     phoCiCIDLevel SUBLEADCUTLEVEL = phoLOOSE, 
+						     Float_t leadPtMin = 30, 
+						     Float_t subleadPtMin = 20, 
+						     int ncategories=6, 
+						     bool applyPtoverM=false, 
+						     float *pho_energy_array=0, 
+						     bool split=false, int fixedvtx=-1, std::vector<bool> veto_indices=std::vector<bool>(false),
+						     std::vector<int> cutsbycat=std::vector<int>(0));
+ 
 
-
+std::vector<int> DiphotonMITPreSelectionForTaggedChannels(const char * type, Float_t leadPtMin, Float_t subleadPtMin, Float_t phoidMvaCut, bool applyPtoverM, float *pho_energy_array=0, bool vetodipho=false, bool kinonly=false, float dipho_BDT_Cut=-100,int fixedvtx=-1, bool split=false, std::vector<bool> veto_indices=std::vector<bool>(false));
 int DiphotonMITPreSelection(const char * type, Float_t leadPtMin, Float_t subleadPtMin, Float_t phoidMvaCut, bool applyPtoverM, float *pho_energy_array=0, bool vetodipho=false, bool kinonly=false, float dipho_BDT_Cut=-100,int fixedvtx=-1, bool split=false, std::vector<bool> veto_indices=std::vector<bool>(false));
 float DiphotonMITPreSelectionPerDipho(const char * type, int idipho, Float_t leadPtMin, Float_t subleadPtMin, Float_t phoidMvaCut, bool applyPtoverM, float *pho_energy_array=0, int fixedvtx=-1, bool split=false, bool kinonly=false, std::vector<bool> veto_indices=std::vector<bool>(false));
 int DiphotonMITPreSelection2011(Float_t leadPtMin, Float_t subleadPtMin, Float_t phoidMvaCut, bool applyPtoverM, float *pho_energy_array=0, bool kinonly=false);
@@ -1229,6 +1239,7 @@ int MuonSelection2012(TLorentzVector& pho1, TLorentzVector& pho2, int vtxind);
 bool MuonPhotonCuts2012(TLorentzVector& pho1, TLorentzVector& pho2, TLorentzVector* thismu);
 //HCP2012
 int MuonSelection2012B(float muptcut=20.);
+std::vector<int> MuonSelection2013(float muptcut=20.);
 bool MuonPhotonCuts2012B(TLorentzVector& pho1, TLorentzVector& pho2, TLorentzVector* thismu,float deltaRcut=1.0);
 bool MuonLooseID2012(int indmu);
 bool MuonTightID2012(int indmu, int vtxind=-1);
@@ -1244,6 +1255,7 @@ bool ElectronLooseEGammaID(int electronindex, int vertexindex=-1);
 bool ElectronTightEGammaID(int electronindex, int vertexindex=-1);
 //HCP2012
 int ElectronSelectionMVA2012(float elptcut=20.);
+std::vector<int> ElectronSelectionMVA2013(float elptcut=20.);
 bool ElectronMVACuts(int el_ind, int vtx_ind=-1);
 bool ElectronPhotonCuts2012B(TLorentzVector& pho1, TLorentzVector& pho2, TLorentzVector& ele, bool includeVHlepPlusMet=false,float deltaRcut=1.0);
 int FindElectronVertex(int el_ind);
@@ -1286,8 +1298,8 @@ bool CheckSphericalPhoton(int ieta, int iphi) const;
 bool CheckSphericalPhoton(int phoind) const;
 
 void VHNewLeptonCategorization(bool & VHlep1event, bool & VHlep2event, int diphotonVHlep_id, int vertex, bool VHelevent_prov, bool VHmuevent_prov, int el_ind, int mu_ind, float* smeared_pho_energy, float METcut, bool moriond2013MetCorrection);
-void VHTwoMuonsEvents(bool & VHlep1event, bool & VHlep2event, int & diphotonVHlep_id, int & muVtx, float* smeared_pho_energy, float leadEtVHlepCut, float subleadEtVHlepCut, bool applyPtoverM, bool mvaselection, float diphobdt_output_Cut_VHLep, float phoidMvaCut, bool vetodipho, bool kinonly, const char * type);
-void VHTwoElectronsEvents(bool & VHlep1event, bool & VHlep2event, int & diphotonVHlep_id, int & elVtx, float* smeared_pho_energy, float leadEtVHlepCut, float subleadEtVHlepCut, bool applyPtoverM, bool mvaselection, float diphobdt_output_Cut_VHLep, float phoidMvaCut, bool vetodipho, bool kinonly, const char * type);
+ void VHTwoMuonsEvents(bool & VHlep1event, bool & VHlep2event, int & diphotonVHlep_id, int & muVtx, float* smeared_pho_energy, float leadEtVHlepCut, float subleadEtVHlepCut, bool applyPtoverM, bool mvaselection, float diphobdt_output_Cut_VHLep, float phoidMvaCut, bool vetodipho, bool kinonly, const char * type,float deltaRcut);
+ void VHTwoElectronsEvents(bool & VHlep1event, bool & VHlep2event, int & diphotonVHlep_id, int & elVtx, float* smeared_pho_energy, float leadEtVHlepCut, float subleadEtVHlepCut, bool applyPtoverM, bool mvaselection, float diphobdt_output_Cut_VHLep, float phoidMvaCut, bool vetodipho, bool kinonly, const char * type, float deltaRcut);
  
 private:
   Float_t photonIDMVA2012(Int_t, Int_t, TLorentzVector &, const char*);

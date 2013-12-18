@@ -33,9 +33,9 @@ def main(options,args):
     interpolations = []
 
     if options.outputMasses != "":
-        interpolations.append( (numpy.array( [float(m) for m in options.outputMasses.split(",")] ), "%s_interpolated.root" % options.output) )
+        interpolations.append( (numpy.array( [float(m) for m in options.outputMasses.split(",")] ), "./%s_interpolated.root" % options.output) )
     elif options.pval:
-        interpolations.append( (numpy.arange(110,150.5,0.5), "%s_interpolated.root" % options.output) )
+        interpolations.append( (numpy.arange(110,150.5,0.5), "./%s_interpolated.root" % options.output) )
     else:
         if options.massScanType == "coarse" :
             interpolations.append( (numpy.concatenate( (numpy.arange(120,122.5,0.5), numpy.arange(123,126,0.1), numpy.arange(126,130.5,0.5)) ), "%s_mass_scan_coarse.root" % options.output) )
@@ -52,7 +52,7 @@ def main(options,args):
     ROOT.RooMsgService.instance().setGlobalKillBelow(ROOT.RooFit.FATAL)
 
     ## open input file
-    fin  = ROOT.TFile.Open("%s.root" % options.input)
+    fin  = ROOT.TFile.Open("./%s.root" % options.input)
     fkeys = fin.GetListOfKeys()
 
     ## Read input workspace
