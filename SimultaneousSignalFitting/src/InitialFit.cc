@@ -43,7 +43,7 @@ vector<int> InitialFit::getAllMH(){
 }
 
 void InitialFit::setVerbosity(int v){
-  if (v<1) {
+  if (v<2) {
     RooMsgService::instance().setGlobalKillBelow(RooFit::ERROR);
     RooMsgService::instance().setSilentMode(true);
   }
@@ -168,9 +168,9 @@ void InitialFit::runFits(int ncpu){
     RooAddPdf *fitModel = sumOfGaussians[mh];
     RooDataSet *data = datasets[mh];
 		// help when dataset has no entries
-		if (data->sumEntries()<1.e-6) {
+		if (data->sumEntries()<1.e-5) {
 			mass->setVal(mh);
-			data->add(RooArgSet(*mass),1.e-6);
+			data->add(RooArgSet(*mass),1.e-5);
 		}
     fitModel->Print();
     data->Print();
