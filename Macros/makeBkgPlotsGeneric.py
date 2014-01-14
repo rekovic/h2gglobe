@@ -61,6 +61,7 @@ def makeLabels():
 		"Dijet Tag 0",
 		"Dijet Tag 1",
 		"Dijet Tag 2",
+		"Dijet Tag 3",
 		"VH Lepton Tight",
 		"VH Lepton Loose",
 		"VH MET Tag",
