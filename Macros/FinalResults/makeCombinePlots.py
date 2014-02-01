@@ -15,6 +15,8 @@ parser.add_option("-s","--style",dest="styles",default=[],action="append",help="
 parser.add_option("-w","--width",dest="widths",default=[],action="append",help="Set width")
 parser.add_option("-n","--name",dest="names",default=[],action="append",help="Set name")
 parser.add_option("-t","--text",dest="text",type="string",default="",help="Add Text")
+parser.add_option("","--xlab",dest="xlab",type="string",default="",help="Label for x-axis")
+parser.add_option("","--xvar",dest="xvar",type="string",default="",help="Branch in TTree to pick up as 'x'")
 parser.add_option("-e","--expected",dest="expected",default=False,action="store_true",help="Expected only")
 parser.add_option("-m","--method",dest="method",type="string",help="Method to run")
 parser.add_option("-l","--legend",dest="legend",type="string",help="Legend position - x1,y1,x2,y2")
@@ -469,6 +471,10 @@ def plot1DNLL(returnErrors=False):
   elif options.method=='mu':
     x = 'r'
     xtitle = '#sigma / #sigma_{SM}'
+    if options.xlab: 
+      xtitle = options.xlab
+    if options.xvar:
+      x = options.xvar
   elif options.method=='rv':
     x = 'RV'
     xtitle = '#mu_{qqH+VH}'
@@ -550,7 +556,9 @@ def plot1DNLL(returnErrors=False):
     eplus2 = h2-m
     eminus2 = m-l2
 
-    
+    print "%15s : %4.2f +%4.2g -%4.2g" % ( options.names[k], xmin, eplus , eminus )
+    #print "%s : %1.4f +%1.3g -%1.3g (2sig) +%1.3g -%1.3g" % ( options.names[k], xmin, eplus , eminus, eplus2, eminus2 )
+
     if returnErrors:
       return [xmin,eplus,eminus,eplus2,eminus2]
 
@@ -613,9 +621,9 @@ def plot1DNLL(returnErrors=False):
   lat2.SetTextSize(0.04)
   lat2.SetTextAlign(22)
   if options.method=='mh': lat2.DrawLatex(0.5,0.85,"m_{H} = %6.2f #pm %4.2f"%(fit,err))
-  elif options.method=='mu': lat2.DrawLatex(0.5,0.85,"#sigma/#sigma_{SM} = %4.2f #pm %4.2f"%(fit,err))
-  elif options.method=='rv': lat2.DrawLatex(0.5,0.85,"#mu_{qqH+VH} = %4.2f #pm %4.2f"%(fit,err))
-  elif options.method=='rf': lat2.DrawLatex(0.5,0.85,"#mu_{ggH+ttH} = %4.2f #pm %4.2f"%(fit,err))
+  elif options.method=='mu': lat2.DrawLatex(0.5,0.85,"#sigma/#sigma_{SM} = %4.2f ^{#font[122]{+}%4.2f}_{#font[122]{-}%4.2f}"%(fit,eplus,eminus))
+  elif options.method=='rv': lat2.DrawLatex(0.5,0.85,"#mu_{qqH+VH} = %4.2f ^{#font[122]{+}%4.2f}_{#font[122]{-}%4.2f}"%(fit,eplus,eminus))
+  elif options.method=='rf': lat2.DrawLatex(0.5,0.85,"#mu_{ggH+ttH} = %4.2f ^{#font[122]{+}%4.2f}_{#font[122]{-}%4.2f}"%(fit,eplus,eminus))
 
   canv.Update()
   if not options.batch: raw_input("Looks ok?")
@@ -748,9 +756,9 @@ def OBSOLETEplot1DNLLOld(returnErrors=False):
   lat2.SetTextSize(0.04)
   lat2.SetTextAlign(22)
   if options.method=='mh': lat2.DrawLatex(0.5,0.85,"m_{H} = %6.2f #pm %4.2f"%(fit,err))
-  elif options.method=='mu': lat2.DrawLatex(0.5,0.85,"#sigma/#sigma_{SM} = %4.2f #pm %4.2f"%(fit,err))
-  elif options.method=='rv': lat2.DrawLatex(0.5,0.85,"#mu_{qqH+VH} = %4.2f #pm %4.2f"%(fit,err))
-  elif options.method=='rf': lat2.DrawLatex(0.5,0.85,"#mu_{ggH+ttH} = %4.2f #pm %4.2f"%(fit,err))
+  elif options.method=='mu': lat2.DrawLatex(0.5,0.85,"#sigma/#sigma_{SM} = %4.2f"%(fit,eplus,eminus))
+  elif options.method=='rv': lat2.DrawLatex(0.5,0.85,"#mu_{qqH+VH} = %4.2f"%(fit,eplus,eminus))
+  elif options.method=='rf': lat2.DrawLatex(0.5,0.85,"#mu_{ggH+ttH} = %4.2f"%(fit,eplus,eminus))
 
   canv.Update()
   if not options.batch: raw_input("Looks ok?")
@@ -1157,25 +1165,11 @@ def run():
   if options.method=='pval' or options.method=='limit' or options.method=='maxlh':
     runStandard()
   elif options.method=='mh' or options.method=='mu' or options.method=='rv' or options.method=='rf' or options.method=='mpdfchcomp' or options.method=='mpdfmaxlh':
-    basepath = None
-    mypath = os.path.abspath(os.path.dirname(__file__))
-    while mypath != '':
-      if os.path.basename(mypath).startswith('h2gglobe'):
-        basepath = mypath
-        break
-      mypath = os.path.dirname(mypath)
-    if not basepath or basepath == '':
-          basepath = os.path.expandvars('$CMSSW_BASE/src/h2gglobe')
-    if not basepath or basepath == '':
-          basepath = os.path.expandvars('$CMSSW_BASE/src/HiggsAnalysis/HiggsTo2photons/h2gglobe')
-    if not basepath or basepath == '':
-      sys.exit('ERROR - Can\'t find path: '+basepath) 
-    path = os.path.join(basepath,'Macros/FinalResults/rootPalette.C')
+    path = os.path.expandvars('$CMSSW_BASE/src/h2gglobe/Macros/FinalResults/rootPalette.C')
     if not os.path.exists(path):
       sys.exit('ERROR - Can\'t find path: '+path) 
     r.gROOT.ProcessLine(".x "+path)
-    ## path = os.path.expandvars('$CMSSW_BASE/src/HiggsAnalysis/HiggsTo2photons/h2gglobe/Macros/ResultScripts/GraphToTF1.C')
-    path = os.path.join(basepath,'Macros/ResultScripts/GraphToTF1.C')
+    path = os.path.expandvars('$CMSSW_BASE/src/h2gglobe/Macros/ResultScripts/GraphToTF1.C')
     if not os.path.exists(path):
       sys.exit('ERROR - Can\'t find path: '+path) 
     r.gROOT.LoadMacro(path)

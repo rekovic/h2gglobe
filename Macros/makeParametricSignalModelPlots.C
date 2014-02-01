@@ -918,7 +918,7 @@ pair<double,double> datEvents(RooWorkspace *work, int m_hyp, int cat, pair<doubl
 }
 
 // from p. meridiani with addition from m. kenzie
-void makeSignalCompositionPlot(int nCats, map<string,string> labels, map<string,vector<double> > sigVals, map<string,double> sigEffs, map<string,double> fwhms, map<string,double> sobVals, string outfname, int mh, bool doBkgAndData, bool splitVH, bool isMassFac, bool is2011, int raiseVHdijet){
+void makeSignalCompositionPlot(int nCats, map<string,string> labels, map<string,vector<double> > sigVals, map<string,double> sigEffs, map<string,double> fwhms, map<string,double> sobVals, string outfname, int mh, bool doBkgAndData, bool splitVH, bool isMassFac, bool is2D, bool is2011, int raiseVHdijet){
 
   TString catName[nCats+1];
 	for (int cat=0; cat<nCats; cat++) catName[cat] = labels[Form("cat%d",cat)];
@@ -1123,9 +1123,13 @@ void makeSignalCompositionPlot(int nCats, map<string,string> labels, map<string,
 			nIncCats=4;
 			nVBFCats=2;
 		}
+		else if (is2D) {
+			nIncCats=5;
+			nVBFCats=4;
+		}
 		else {
 			nIncCats=5;
-			nVBFCats=3;
+			nVBFCats=4;
 		}
 	}
   TLine *line = new TLine(0,nCats-nIncCats+0.5,100,nCats-nIncCats+0.5);
@@ -1405,7 +1409,7 @@ void getNCats(RooWorkspace *ws, int mh, int &ncats){
 }
 
 // main function
-void makeParametricSignalModelPlots(string sigFitFileName, string outPathName, int m_hyp=125, bool blind=true, bool doTable=false, string bkgdatFileName="0", int ncats=9, bool is2011=false, bool splitVH=false, bool isMassFac=true, int raiseVHdijet=0, bool spin=false, string spinProc="", string binnedSigFileName="", bool doCrossCheck=false, bool doMIT=false, bool rejig=false){
+void makeParametricSignalModelPlots(string sigFitFileName, string outPathName, int m_hyp=125, bool blind=true, bool doTable=false, string bkgdatFileName="0", int ncats=15, bool is2011=false, bool splitVH=false, bool isMassFac=true, bool is2D=false, int raiseVHdijet=0, bool spin=false, string spinProc="", string binnedSigFileName="", bool doCrossCheck=false, bool doMIT=false, bool rejig=false){
 
   gROOT->SetBatch();
   gStyle->SetTextFont(42);
@@ -1437,6 +1441,7 @@ void makeParametricSignalModelPlots(string sigFitFileName, string outPathName, i
   cout << "\t is2011: " << is2011 << endl;
   cout << "\t splitVH: " << splitVH << endl;
   cout << "\t isMassFac: " << isMassFac << endl;
+  cout << "\t is2D: " << is2D << endl;
   cout << "\t ncats: " << ncats << endl;
   
   RooRealVar *mass= (RooRealVar*)hggWS->var("CMS_hgg_mass");
@@ -1497,6 +1502,19 @@ void makeParametricSignalModelPlots(string sigFitFileName, string outPathName, i
 			labels.insert(pair<string,string>("cat8","VH MET Tag"));     
 			labels.insert(pair<string,string>("cat9","ttH Tags"));
 			labels.insert(pair<string,string>("cat10","VH Dijet Tag"));
+		}
+		else if(is2D) {
+			labels.insert(pair<string,string>("cat4","Untagged 4"));
+			labels.insert(pair<string,string>("cat5","Dijet 2D Tag 0"));
+			labels.insert(pair<string,string>("cat6","Dijet 2D Tag 1"));
+			labels.insert(pair<string,string>("cat7","Dijet 2D Tag 2"));
+			labels.insert(pair<string,string>("cat8","Dijet 2D Tag 3"));
+			labels.insert(pair<string,string>("cat9","VH Lepton Tight"));
+			labels.insert(pair<string,string>("cat10","VH Lepton Loose"));
+			labels.insert(pair<string,string>("cat11","VH MET Tag"));     
+			labels.insert(pair<string,string>("cat12","ttH Leptonic Tag"));
+			labels.insert(pair<string,string>("cat13","ttH Multijet Tag"));
+			labels.insert(pair<string,string>("cat14","VH Dijet Tag"));
 		}
 		else {
 			labels.insert(pair<string,string>("cat4","Untagged 4"));
@@ -1722,7 +1740,7 @@ void makeParametricSignalModelPlots(string sigFitFileName, string outPathName, i
     }
     fclose(nfile);
     fclose(file);
-    makeSignalCompositionPlot(ncats,labels,sigVals,sigEffs,fwhms,sobVals,Form("%s/signalComposition",outPathName.c_str()),m_hyp,doBkgAndData,splitVH,isMassFac,is2011,raiseVHdijet);
+    makeSignalCompositionPlot(ncats,labels,sigVals,sigEffs,fwhms,sobVals,Form("%s/signalComposition",outPathName.c_str()),m_hyp,doBkgAndData,splitVH,isMassFac,is2D,is2011,raiseVHdijet);
     system(Form("cat %s/table.txt",outPathName.c_str()));
     cout << "-->" << endl;
     cout << Form("--> LaTeX version of this table has been written to %s/table.tex",outPathName.c_str()) << endl;

@@ -96,6 +96,7 @@ def main(options,args):
     from ROOT import gSystem, gROOT, gStyle
     gROOT.SetBatch()
     gSystem.Load("libRooFitCore")
+    gSystem.Load("libHiggsAnalysisCombinedLimit.so")
 
     if options.doWebPage:
         from lip.Tools.rootutils import loadToolsLib, apply_modifs
@@ -169,6 +170,7 @@ def main(options,args):
     mass.setBins(5000)
 
     print ws
+
     
     aset = RooArgSet(mass)
 
@@ -194,9 +196,9 @@ def main(options,args):
         dsname = "sig_mass_m%1.0f%s" % (options.mH,c)
         print dsname
         print ws
-        ds = ws.data( "sig_%s_mass_m%1.0f%s" % (processes[0],options.mH,c)  ).Clone(dsname)
+        ds = ws.data( "roohist_sig_%s_mass_m%1.0f%s" % (processes[0],options.mH,c)  ).Clone(dsname)
         for proc in processes[1:]:
-            ds.append( ws.data( "sig_%s_mass_m%1.0f%s" % (proc,options.mH,c)  ) )
+            ds.append( ws.data( "roohist_sig_%s_mass_m%1.0f%s" % (proc,options.mH,c)  ) )
         helper.dsets.append( ds )
 
 
@@ -212,7 +214,7 @@ def main(options,args):
                     for proc in processes:
                         for ngaus in range(1,4):
                             pp = build_pdf(ws,"%s_%s" % (c,proc),ngaus,ngaus==3 )
-                            pp.fitTo( ws.data( "sig_%s_mass_m%1.0f%s" % (proc,options.mH,c)), RooFit.Strategy(0), *fitopt )
+                            pp.fitTo( ws.data( "roohist_sig_%s_mass_m%1.0f%s" % (proc,options.mH,c)), RooFit.Strategy(0), *fitopt )
                         rpdfs.append(pp)
                     pdf = RooAddPdf("hggpdfrel%s" % c, "hggpdfrel%s" % c, RooArgList(*tuple(rpdfs) ))
                 else:

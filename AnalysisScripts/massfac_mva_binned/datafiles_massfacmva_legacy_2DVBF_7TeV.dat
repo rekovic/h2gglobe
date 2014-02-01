@@ -1,7 +1,7 @@
 #intL=5089.0 histfile=/store/group/phys_higgs/cmshgg/analyzed/legacy/massfac/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
 #intL=5089.0 histfile=CMS-HGG_123vbf.root output=eventsList.txt sqrtS=7
 #intL=19715. histfile=/store/caf/user/rekovic/legacy2013/globeResults/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
-intL=5089.0 histfile=/store/caf/user/rekovic/legacy2013/globeResults/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
+intL=5089.0 histfile=/store/caf/user/rekovic/legacy2013/globeResults/massfac/7TeV/%(label)s/CMS-HGG.root output=eventsList.txt sqrtS=7
 
 #
 # Data
